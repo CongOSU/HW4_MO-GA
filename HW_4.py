@@ -11,19 +11,41 @@ class Location():
         self.lowTime = lowTime
         self.highTime = highTime
 
-#locations and time windows global
-
-Loc0 = Location(0, 0, 2, 0, 100000000, 0)
-Loc1 = Location(10, 12, 2, 2, 20, 1)
-Loc2 = Location(-5, 15, 4, 2, 200, 1)
-Loc3 = Location(25, -1, 5, 15, 4000, 1)
-Loc4 = Location(5, 5, 3, 0, 10, 1)
-Loc5 = Location(26, 4, 1, 2, 1, 1)
-Loc6 = Location(-18, -9, 1, 2, 1, 1)
-Loc7 = Location(10, 11, 6, 2, 1, 1)
-Loc8 = Location(15, -5, 7, 2, 1, 1)
-Loc9 = Location(28, 28, 2, 2, 1, 1)
-Loc10 = Location(-28, 18, 1, 2, 1, 1)
+#Get Locations function
+def Location(loc):
+    Loc0 = Location(0, 0, 2, 0, 100000000)
+    Loc1 = Location(10, 12, 2, 2, 20)
+    Loc2 = Location(-5, 15, 4, 2, 200)
+    Loc3 = Location(25, -1, 5, 15, 4000)
+    Loc4 = Location(5, 5, 3, 0, 10)
+    Loc5 = Location(26, 4, 1, 2, 1)
+    Loc6 = Location(-18, -9, 1, 2, 1)
+    Loc7 = Location(10, 11, 6, 2, 1)
+    Loc8 = Location(15, -5, 7, 2, 1)
+    Loc9 = Location(28, 28, 2, 2, 1)
+    Loc10 = Location(-28, 18, 1, 2, 1)
+    if loc == 0:
+        return Loc0
+    if loc == 1:
+        return Loc1
+    if loc == 2:
+        return Loc2
+    if loc == 3:
+        return Loc3
+    if loc == 4:
+        return Loc4
+    if loc == 5:
+        return Loc5
+    if loc == 6:
+        return Loc6
+    if loc == 7:
+        return Loc7
+    if loc == 8:
+        return Loc8
+    if loc == 9:
+        return Loc9
+    if loc == 10:
+        return Loc10
 
 '''
 def initializePop():
@@ -92,14 +114,44 @@ def mutation(individual):
     individual = individual[:start] + individual[stop:start-1:-1] + individual[stop+1:]
     return individual,
 
-def createPop():
 
-def evaluation():
-    trucks = 0
+
+def evaluation(chromosome=[]):
+    trucks = 4
     totalDist = 0
     valid = 0
+    route1 = []
+    route2 = []
+    route3 = []
+    route4 = []
+    #get routes
+    for x in chromosome(1,):
+
+    #compute distance
+    #check to see if  the route is valid with time  windows
+    for x in route1:
+        if x == len(route1):
+    for x in route2:
+        if x == len(route1):
+    for x in route3:
+        if x == len(route1):
+    for x in route4:
+        if x == len(route1):
+
+    #sum to get total distance
+    totalDist = distR1 + distR2 + distR3 + distR5
+
+    if route1 == []:
+        trucks = trucks - 1
+    if route2 == []:
+        trucks = trucks - 1
+    if route3 == []:
+        trucks = trucks - 1
+    if route4 == []:
+        trucks = trucks - 1
 
     return trucks, totalDist, valid
+
 def main():
     random.seed
     startTime = datetime.datetime.now()
