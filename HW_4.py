@@ -2,14 +2,6 @@ import math
 import sys
 import random
 
-class Location():
-    def __init__(self,xloc,yloc,service, lowTime,highTime,ID):
-        self.ID = ID
-        self.xloc = xloc
-        self.yloc = yloc
-        self.service = service
-        self.lowTime = lowTime
-        self.highTime = highTime
 
 #Get distance between locations
 def LocationDist(locF,locT):
@@ -21,17 +13,18 @@ def LocationDist(locF,locT):
 #get location
 def Location(loc):
 
-    Loc0 = Location(0, 0, 0, 100000000, 0)
-    Loc1 = Location(45, 68, 85, 900, 20)
-    Loc2 = Location(45, 70, 100, 500, 20)
-    Loc3 = Location(42, 66, 5, 1500, 20)
-    Loc4 = Location(42, 68, 350, 1000, 20)
-    Loc5 = Location(42, 65, 85, 200, 10)
-    Loc6 = Location(40, 69, 0, 350, 10)
-    Loc7 = Location(40, 66, 0, 920, 10)
-    Loc8 = Location(38, 68, 70, 2000, 15)
-    Loc9 = Location(38, 70, 3000, 3100, 15)
-    Loc10 = Location(35, 66, 2500, 2750, 15)
+    # Xloc,Yloc,ReadyTime,CloseTime,ServiceTime
+    Loc0 = [0, 0, 0, 100000000, 0]
+    Loc1 = [45, 68, 85, 900, 20]
+    Loc2 = [45, 70, 100, 500, 20]
+    Loc3 = [42, 66, 5, 1500, 20]
+    Loc4 = [42, 68, 350, 1000, 20]
+    Loc5 = [42, 65, 85, 200, 10]
+    Loc6 = [40, 69, 0, 350, 10]
+    Loc7 = [40, 66, 0, 920, 10]
+    Loc8 = [38, 68, 70, 2000, 15]
+    Loc9 = [38, 70, 3000, 3100, 15]
+    Loc10 = [35, 66, 2500, 2750, 15]
 
     if loc == 0:
         return Loc0
