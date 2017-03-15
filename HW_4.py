@@ -255,15 +255,19 @@ def main():
         if val2 == True:
             candidate.append(candidate2)
             count = count + 1
+            
     for i in range(10):
         for j in range(i+1, 10):
             candidate3_1, candidate4_1 = PMXcrossover(candidate[i][0], candidate[j][0])
             candidate3, candidate4 = PMXcrossover(candidate[i][1], candidate[j][1])
             candidate.append(candidate3)
             candidate.append(candidate4)
+            
     for i in range(len(candidate)):
         candidate5_1 = mutation(candidate[i][0])
         candidate5 = mutation(candidate[i][1])
+        candidate.append(candidate)
+        
     final_candidate = []
     for i in range(len(candidate)):
         x, y, valid, z = candidate[i]
