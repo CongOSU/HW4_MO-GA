@@ -159,7 +159,7 @@ def checkValid(route=[]):
 
     return valid
 
-def evaluation(chromosome=[][]):
+def evaluation(chromosome=[]):
     trucks = 4
     totalDist = 0
     valid = True
@@ -208,11 +208,8 @@ def evaluation(chromosome=[][]):
     return trucks, totalDist, valid, weightedObj
 
 def main():
-    random.seed
-    startTime = datetime.datetime.now()
-    bestParent = generate_parent(len(target))
-    bestFitness = get_fitness(bestParent)
-    display(bestParent)
+    generations = 10
+    for x in range(10):
 
     #initialize population function
 
