@@ -138,9 +138,10 @@ def PMXcrossover(parent_a, parent_b):
 
 
 def mutation(individual):
-    for z in range(len(individual)):
+    newind = individual[:]
+    for z in range(len(newind)):
         if random.random() < 0.1:
-            individual[z] = math.ceil(random.random()*4)
+            newind[z] = math.ceil(random.random()*4)
     #return individual
     #start, stop = sorted(random.sample(range(1,len(individual)), 2))
     #individual = individual[:start] + individual[stop:start-1:-1] + individual[stop+1:]
@@ -148,7 +149,7 @@ def mutation(individual):
     #j = random.randint(1, 4)
     #individual = individual.pop([i])
     #individual[i] = individual.insert(i, j)
-    return individual
+    return newind
 
 
 def totalRouteDist(route=[]):
@@ -270,10 +271,12 @@ def main():
             candidate.append(candidate2)
             count = count + 1
     
-    print(candidate)
+    
 #GENERATION LOOP START
-    for gen in range(1):    
+    for gen in range(1000):    
         
+        #print(candidate)
+        #print("This is the candidate list abov before mutatione")
         #complete PMX crossover from entire population
         chromosome = []
         for i in range(10):
@@ -282,6 +285,8 @@ def main():
                 while child < 1:
                     candidate3_1, candidate4_1 = PMXcrossover(candidate[i][0], candidate[j][0])
                     #print(candidate3_1, candidate4_1)
+                    #candidate3_sublist = candidate[i][1]
+                    #candidate4_sublist = candidate[j][1]
                     candidate3_sublist = mutation(candidate[i][1])
                     candidate4_sublist = mutation(candidate[j][1])
                     chromosome3 = []
@@ -300,30 +305,37 @@ def main():
                         child = child + 1
                     #print('iteration of chromosome')
                 #print(chromosome)
-        print(chromosome)     
+        #print(chromosome)
+        #print(candidate)
+        #print("This is the candidate list abov after mutatione")
+        #print("This is the chromosome list above")
         for i in range(len(candidate)):
             chromosome.append(candidate[i])
             
         final_candidate = chromosome
-        print(final_candidate)    
+        #print(final_candidate)    
+        #print("This is the final population before tourney and elite")
         #eliteism
         best = 1000000
         secbest = 1000001
         dex1 = 0
+        print(len(final_candidate))
         for i in range(len(final_candidate)):
             tr, dista, na, weighteval = evaluation(final_candidate[i])
             if weighteval < best:
+                print("new best is " + str(weighteval))
                 #bump the current best to second
                 secbest = best
                 dex2 = dex1
                 #set the new best
                 best = weighteval
                 dex1 = i
-                
             elif weighteval < secbest:
                 secbest = weighteval
                 dex2 = i
-        
+
+        a,b,c,d = evaluation(final_candidate[dex1])
+        print("The best value for this generation is " + str(d))
         #print(final_candidate[dex1])
         #tournament
         newCandPop = []
@@ -335,7 +347,7 @@ def main():
             compdex2 = math.floor(random.random()*len(final_candidate))
             a1,b1,c1,d1 = evaluation(final_candidate[compdex1])
             a2,b2,c2,d2 = evaluation(final_candidate[compdex2])
-            if c1 < c2:
+            if d1 < d2:
                 newCandPop.append(final_candidate[compdex1])
             else:
                 newCandPop.append(final_candidate[compdex2])
@@ -352,7 +364,7 @@ def main():
         #print('uses ' + str(trucks) + ' trucks and has a total distance of ' + str(dista))
         print('OBJECTIVE FUNCTION VAL = ' + str(objVal))
     
-    print(candidate)
+    #print(candidate)
 
     #initialize population function
 
