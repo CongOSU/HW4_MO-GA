@@ -1,3 +1,23 @@
+'''
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @CongOSU
+ Sign out
+ Watch 1
+  Star 0
+ Fork 0 CongOSU/HW4_MO-GA
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathHW4_MO-GA/HW_4.py
+77276b4  8 minutes ago
+ LAPTOP-27T359M3\RothC removed locations class
+1 contributor
+RawBlameHistory     
+224 lines (190 sloc)  6.04 KB
+'''
 import math
 import sys
 import random
@@ -7,7 +27,7 @@ import random
 def LocationDist(locF,locT):
     From = Location(locF)
     To = Location(locT)
-    distance = (From(1)-To(1))**2+(From(2)-To(2))**2)**(1/2)
+    distance = ((From[0]-To[0])**2+(From[1]-To[1])**2)**(1/2)
     return distance
 
 #get location
@@ -49,66 +69,72 @@ def Location(loc):
     if loc == 10:
         return Loc10
 
-'''
 def initializePop():
 
-    initialPopulation = []
+    initialPop_1 = []
+    initialPop_2 = []
+    initialPop_1 = random.sample(range(1, 11), 10)
+    #print(initialPop_1)
+    initialPop_2 = random.sample(range(1, 11), 10)
+    #print(initialPop_2)
 
-    while len(initialPopulation) < 10:
+    trucksID_1 = []
+    trucksID_2 = []
+    while len(trucksID_1) < 10:
+        trucksID_1.append(random.randint(1,4))
+    print(trucksID_1)
+    while len(trucksID_2) < 10:
+        trucksID_2.append(random.randint(1,4))
+    #print(trucksID_2)
+    
+    initial_1=[]
+    initial_2=[]
+    initial_1.append(initialPop_1)
+    initial_2.append(initialPop_2)
+    initial_1.append(trucksID_1)
+    initial_2.append(trucksID_2)
+    return initial_1, initial_2
 
-        trucks, totalDist, valid = evaluation()
-        if valid == 1:
-            initialPopulation
-
-    return initialPopulation
-'''
 
 
-def ind2route(individual, instance):
-    # individual is a list, instance is a objected dict
-    route = []
-    deportDueTime =  instance['deport']['due_time']
-    # Initialize a sub-route
-    subRoute = []
-    elapsedTime = 0
-    lastCustomerID = 0
-    for customerID in individual:
-        # Update elapsed time
-        serviceTime = instance['customer_%d' % customerID]['service_time']
-        returnTime = instance['distance_matrix'][customerID][0]
-        updatedElapsedTime = elapsedTime + instance['distance_matrix'][lastCustomerID][customerID] + serviceTime + returnTime
-        # Validate vehicle load and elapsed time
-        if (updatedElapsedTime <= deportDueTime):
-            # Add to current sub-route
-            subRoute.append(customerID)
-            elapsedTime = updatedElapsedTime - returnTime
-        else:
-            # Save current sub-route
-            route.append(subRoute)
-            # Initialize a new sub-route and add to it
-            subRoute = [customerID]
-            elapsedTime = instance['distance_matrix'][0][customerID] + serviceTime
-        # Update last customer ID
-        lastCustomerID = customerID
-    if subRoute != []:
-        # Save current sub-route before return if not empty
-        route.append(subRoute)
-    return route
-
-def PMXcrossover(ind1, ind2):
-    size = (len(ind1)
-    cxpoint1, cxpoint2 = sorted(random.sample(range(size), 2))
-    temp1 = ind1[cxpoint1:cxpoint2+1] + ind2
-    temp2 = ind1[cxpoint1:cxpoint2+1] + ind1
-    ind1 = []
-    for x in temp1:
-        if x not in ind1:
-            ind1.append(x)
-    ind2 = []
-    for x in temp2:
-        if x not in ind2:
-            ind2.append(x)
-    return ind1, ind2
+def _repeated(element, collection):
+    c = 0
+    for e in collection:
+        if e == element:
+            c += 1
+    return c > 1
+ 
+def _swap(data_a, data_b, cross_points):
+    c1, c2 = cross_points
+    new_a = data_a[:c1] + data_b[c1:c2] + data_a[c2:]
+    new_b = data_b[:c1] + data_a[c1:c2] + data_b[c2:]
+    return new_a, new_b
+ 
+ 
+def _map(swapped, cross_points):
+    n = len(swapped[0])
+    c1, c2 = cross_points
+    s1, s2 = swapped
+    map_ = s1[c1:c2], s2[c1:c2]
+    for i_chromosome in range(n):
+        if not c1 < i_chromosome < c2:
+            for i_son in range(2):
+                while _repeated(swapped[i_son][i_chromosome], swapped[i_son]):
+                    map_index = map_[i_son].index(swapped[i_son][i_chromosome])
+                    swapped[i_son][i_chromosome] = map_[1-i_son][map_index]
+    return s1, s2
+ 
+ 
+def PMXcrossover(parent_a, parent_b):
+    #A = initializePop()
+    #parent_a = A[4]
+    #parent_b = A[5]
+    n = len(parent_a)
+    cross_points = sorted([random.randint(0, n) for _ in range(2)])
+    swapped = _swap(parent_a, parent_b, cross_points)
+    mapped = _map(swapped, cross_points)
+ 
+    return mapped
 
 
 def mutation(individual):
@@ -207,9 +233,58 @@ def evaluation(chromosome=[]):
 
     return trucks, totalDist, valid, weightedObj
 
+
+
 def main():
+<<<<<<< HEAD
     generations = 10
     for x in range(10):
+=======
+    candidate = []
+    count = 0
+    '''
+    candidate1, candidate2 = initializePop()
+    candidate.append(candidate1)
+    print(candidate1)
+    '''
+    while count < 10:
+        candidate1, candidate2 = initializePop()
+        x,y,val1,z = evaluation(candidate1)
+        x,y,val2,z = evaliation(candidate2)
+        if val1 == True:
+            candidate.append(candidate1)
+            count = count + 1
+            if count == 10:
+                break
+        if val2 == True:
+            candidate.append(candidate2)
+            count = count + 1
+            
+    for i in range(10):
+        for j in range(i+1, 10):
+            candidate3_1, candidate4_1 = PMXcrossover(candidate[i][0], candidate[j][0])
+            candidate3, candidate4 = PMXcrossover(candidate[i][1], candidate[j][1])
+            candidate.append(candidate3)
+            candidate.append(candidate4)
+            
+    for i in range(len(candidate)):
+        candidate5_1 = mutation(candidate[i][0])
+        candidate5 = mutation(candidate[i][1])
+        candidate.append(candidate)
+        
+    final_candidate = []
+    for i in range(len(candidate)):
+        x, y, valid, z = candidate[i]
+        if valid == True:
+            final_candidate.append(candidate[i])
+    print(final_candidate)
+
+
+
+
+
+
+>>>>>>> 150723bf016009c539b146b507a5b5a3b8453290
 
     #initialize population function
 
@@ -219,3 +294,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    '''Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help
+'''
