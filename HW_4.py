@@ -126,6 +126,9 @@ def mutation(individual):
 
 def totalRouteDist(route=[]):
     dist = 0
+    if route == []:
+        return dist
+
     for x in range(len(route)):
         if x == 0:
             dist = dist + LocationDist(0,route[x])
@@ -137,6 +140,8 @@ def totalRouteDist(route=[]):
 def checkValid(route=[]):
     time = 0
     valid = True
+    if route == []:
+        return valid
 
     for x in range(len(route)):
         Loc=Location(x)
@@ -161,7 +166,7 @@ def checkValid(route=[]):
 
     return valid
 
-def evaluation(chromosome=[]):
+def evaluation(chromosome=[][]):
     trucks = 4
     totalDist = 0
     valid = True
@@ -169,15 +174,17 @@ def evaluation(chromosome=[]):
     route2 = []
     route3 = []
     route4 = []
-    for i in range(len(chromosome)):
-        if chromoseom[i] == 1:
-            route1.append(chromosome[i])
-        if chromoseom[i] == 2:
-            route1.append(chromosome[i])
-        if chromoseom[i] == 3:
-            route1.append(chromosome[i])
-        if chromoseom[i] == 4:
-            route1.append(chromosome[i])
+
+    for i in range(len(chromosome[0])):
+        dex = chromosome[0].index(i+1)
+        if chromosome[1][dex] == 1:
+            route1.append(chromosome[0][dex])
+        if chromosome[1][dex] == 2:
+            route2.append(chromosome[0][dex])
+        if chromosome[1][dex] == 3:
+            route3.append(chromosome[0][dex])
+        if chromosome[1][dex] == 4:
+            route4.append(chromosome[0][dex])
 
     #check to see if  the route is valid with time  windows
     if checkValid(route1) == False:
