@@ -132,17 +132,32 @@ def totalRouteDist(route=[]):
         else:
             dist = dist + LocationDist(route[x-1],route[x])
 
-def checkValid(route=[])
+def checkValid(route=[]):
     time = 0
-    valid = true
+    valid = True
+
     for x in range(len(route)):
+        Loc=Location(x)
         if x == 0:
             time = time + LocationDist(0,route[x])
+            if time < Loc(2):
+                time = Loc(2)+Loc(4)
+            else:
+                time = time + Loc(4)
         if x+1 == len(route):
             time = time + LocationDist(route[x],0)
+            if time < Loc(2):
+                time = Loc(2)+Loc(4)
+            else:
+                time = time + Loc(4)
         else:
             time = time + LocationDist(route[x-1],route[x])
-        return valid
+
+        if time > Loc(3):
+            valid = False
+            return valid
+
+    return valid
 
 def evaluation(chromosome=[]):
     trucks = 4
@@ -152,6 +167,15 @@ def evaluation(chromosome=[]):
     route2 = []
     route3 = []
     route4 = []
+    for i in range(len(chromosome)):
+        if chromoseom[i] == 1:
+            route1.append(chromosome[i])
+        if chromoseom[i] == 2:
+            route1.append(chromosome[i])
+        if chromoseom[i] == 3:
+            route1.append(chromosome[i])
+        if chromoseom[i] == 4:
+            route1.append(chromosome[i])
 
     #check to see if  the route is valid with time  windows
     if checkValid(route1) == False:
@@ -164,7 +188,7 @@ def evaluation(chromosome=[]):
         valid = False
 
     #sum to get total distance
-    totalDist = distR1 + distR2 + distR3 + distR5
+    totalDist = totalRouteDist(route1)+totalRouteDist(route2)+totalRouteDist(route3)+totalRouteDist(route4)
 
     #gets total # of trucks
     if route1 == []:
