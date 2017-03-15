@@ -11,19 +11,26 @@ class Location():
         self.lowTime = lowTime
         self.highTime = highTime
 
-#Get Locations function
+#Get distance between locations
+def LocationDist(locF,locT):
+    From = Location(locF)
+    To = Location(locT)
+    distance = (From(1)-To(1))**2+(From(2)-To(2))**2)**(1/2)
+    return distance
+
+#get location
 def Location(loc):
     Loc0 = Location(0, 0, 2, 0, 100000000)
-    Loc1 = Location(10, 12, 2, 2, 20)
-    Loc2 = Location(-5, 15, 4, 2, 200)
-    Loc3 = Location(25, -1, 5, 15, 4000)
-    Loc4 = Location(5, 5, 3, 0, 10)
-    Loc5 = Location(26, 4, 1, 2, 1)
-    Loc6 = Location(-18, -9, 1, 2, 1)
-    Loc7 = Location(10, 11, 6, 2, 1)
-    Loc8 = Location(15, -5, 7, 2, 1)
-    Loc9 = Location(28, 28, 2, 2, 1)
-    Loc10 = Location(-28, 18, 1, 2, 1)
+    Loc1 = Location(45, 68, 2, 2, 20)
+    Loc2 = Location(45, 70, 4, 2, 200)
+    Loc3 = Location(42, 66, 5, 15, 4000)
+    Loc4 = Location(42, 68, 3, 0, 10)
+    Loc5 = Location(42, 65, 1, 2, 1)
+    Loc6 = Location(40, 69, 1, 2, 1)
+    Loc7 = Location(40, 66, 6, 2, 1)
+    Loc8 = Location(38, 68, 7, 2, 1)
+    Loc9 = Location(38, 70, 2, 2, 1)
+    Loc10 = Location(35, 66, 1, 2, 1)
     if loc == 0:
         return Loc0
     if loc == 1:
@@ -115,32 +122,51 @@ def mutation(individual):
     return individual,
 
 
+def totalRouteDist(route=[]):
+    dist = 0
+    for x in range(len(route)):
+        if x == 0:
+            dist = dist + LocationDist(0,route[x])
+        if x+1 == len(route):
+            dist = dist + LocationDist(route[x],0)
+        else:
+            dist = dist + LocationDist(route[x-1],route[x])
+
+def checkValid(route=[])
+    time = 0
+    valid = true
+    for x in range(len(route)):
+        if x == 0:
+            time = time + LocationDist(0,route[x])
+        if x+1 == len(route):
+            time = time + LocationDist(route[x],0)
+        else:
+            time = time + LocationDist(route[x-1],route[x])
+        return valid
 
 def evaluation(chromosome=[]):
     trucks = 4
     totalDist = 0
-    valid = 0
+    valid = True
     route1 = []
     route2 = []
     route3 = []
     route4 = []
-    #get routes
-    for x in chromosome(1,):
 
-    #compute distance
     #check to see if  the route is valid with time  windows
-    for x in route1:
-        if x == len(route1):
-    for x in route2:
-        if x == len(route1):
-    for x in route3:
-        if x == len(route1):
-    for x in route4:
-        if x == len(route1):
+    if checkValid(route1) == False:
+        valid = False
+    if checkValid(route2) == False:
+        valid = False
+    if checkValid(route3) == False:
+        valid = False
+    if checkValid(route4) == False:
+        valid = False
 
     #sum to get total distance
     totalDist = distR1 + distR2 + distR3 + distR5
 
+    #gets total # of trucks
     if route1 == []:
         trucks = trucks - 1
     if route2 == []:
