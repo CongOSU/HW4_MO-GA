@@ -20,17 +20,19 @@ def LocationDist(locF,locT):
 
 #get location
 def Location(loc):
-    Loc0 = Location(0, 0, 2, 0, 100000000)
-    Loc1 = Location(45, 68, 2, 2, 20)
-    Loc2 = Location(45, 70, 4, 2, 200)
-    Loc3 = Location(42, 66, 5, 15, 4000)
-    Loc4 = Location(42, 68, 3, 0, 10)
-    Loc5 = Location(42, 65, 1, 2, 1)
-    Loc6 = Location(40, 69, 1, 2, 1)
-    Loc7 = Location(40, 66, 6, 2, 1)
-    Loc8 = Location(38, 68, 7, 2, 1)
-    Loc9 = Location(38, 70, 2, 2, 1)
-    Loc10 = Location(35, 66, 1, 2, 1)
+
+    Loc0 = Location(0, 0, 0, 100000000, 0)
+    Loc1 = Location(45, 68, 85, 900, 20)
+    Loc2 = Location(45, 70, 100, 500, 20)
+    Loc3 = Location(42, 66, 5, 1500, 20)
+    Loc4 = Location(42, 68, 350, 1000, 20)
+    Loc5 = Location(42, 65, 85, 200, 10)
+    Loc6 = Location(40, 69, 0, 350, 10)
+    Loc7 = Location(40, 66, 0, 920, 10)
+    Loc8 = Location(38, 68, 70, 2000, 15)
+    Loc9 = Location(38, 70, 3000, 3100, 15)
+    Loc10 = Location(35, 66, 2500, 2750, 15)
+
     if loc == 0:
         return Loc0
     if loc == 1:
@@ -200,7 +202,10 @@ def evaluation(chromosome=[]):
     if route4 == []:
         trucks = trucks - 1
 
-    return trucks, totalDist, valid
+    #weighted objected function
+    weightedObj = trucks * 50 + totalDist
+
+    return trucks, totalDist, valid, weightedObj
 
 def main():
     random.seed
