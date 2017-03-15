@@ -236,10 +236,8 @@ def evaluation(chromosome=[]):
 
 
 def main():
-<<<<<<< HEAD
     generations = 10
     for x in range(10):
-=======
     candidate = []
     count = 0
     '''
@@ -279,18 +277,29 @@ def main():
             final_candidate.append(candidate[i])
     print(final_candidate)
 
+    #eliteism
+    best = 1000000
+    secbest = 1000000
+    for i in range(len(final_candidate)):
+        tr, dista, na, weighteval = evaluation(final_candidate[i])
+        if weighteval < best:
+            dex1 = i
+        elif weighteval < secbest:
+            dex2 = i
 
-
-
-
-
->>>>>>> 150723bf016009c539b146b507a5b5a3b8453290
-
-    #initialize population function
-
-    #loop for number of generations
-        #create next candidate population function
-
+    #tournament
+    newCandPop = []
+    newCandPop.append(final_candidate[dex1])
+    newCandPop.append(final_candidate[dex2])
+    for i in range(8):
+        compdex1 = math.floor(random.random()*len(final_candidate))
+        compdex2 = math.floor(random.random()*len(final_candidate))
+        a1,b1,c1,d1 = evaluation(final_candidate[compdex1])
+        a2,b2,c2,d2 = evaluation(final_candidate[compdex2])
+        if c1 < c2:
+            newCandPop.append(final_candidate[compdex1])
+        else:
+            newCandPop.append(final_candidate[compdex2])
 
 if __name__ == '__main__':
     main()
