@@ -21,6 +21,7 @@ RawBlameHistory
 import math
 import sys
 import random
+import matplotlib.pyplot as plt
 
 
 #Get distance between locations
@@ -34,17 +35,73 @@ def LocationDist(locF,locT):
 def Location(loc):
 
     # Xloc,Yloc,ReadyTime,CloseTime,ServiceTime
-    Loc0 = [0, 0, 0, 100000000, 0]
-    Loc1 = [45, 68, 85, 900, 20]
-    Loc2 = [45, 70, 100, 500, 20]
-    Loc3 = [42, 66, 5, 1500, 20]
-    Loc4 = [42, 68, 350, 1000, 20]
-    Loc5 = [42, 65, 85, 200, 10]
-    Loc6 = [40, 69, 0, 350, 10]
-    Loc7 = [40, 66, 0, 920, 10]
-    Loc8 = [38, 68, 70, 2000, 15]
-    Loc9 = [38, 70, 3000, 3100, 15]
-    Loc10 = [35, 66, 2500, 2750, 15]
+    
+    
+    # C101 with wide time window
+    # Due time - Ready time >> Service time
+    Loc0 = [40, 50, 0, 100000000, 0]
+    Loc1 = [45, 68, 161, 261, 10]
+    Loc2 = [45, 70, 50, 150,10]
+    Loc3 = [42, 66, 116, 216, 10]
+    Loc4 = [42, 68, 149, 249, 10]
+    Loc5 = [42, 65, 34, 134, 10]
+    Loc6 = [40, 69, 99, 199, 10]
+    Loc7 = [40, 66, 81, 181, 10]
+    Loc8 = [38, 68, 95, 195, 10]
+    Loc9 = [38, 70, 97, 197, 10]
+    Loc10 = [35, 66, 124, 224,10]
+    
+    
+    
+    '''
+    # C101 with narrow time window
+    # Due time - Ready time = Service time + 10
+    Loc0 = [40, 50, 0, 100000000, 0]
+    Loc1 = [45, 68, 161, 181, 10]
+    Loc2 = [45, 70, 50, 70,10]
+    Loc3 = [42, 66, 116, 136, 10]
+    Loc4 = [42, 68, 149, 169, 10]
+    Loc5 = [42, 65, 34, 54, 10]
+    Loc6 = [40, 69, 99, 119, 10]
+    Loc7 = [40, 66, 81, 101, 10]
+    Loc8 = [38, 68, 95, 115, 10]
+    Loc9 = [38, 70, 97, 117, 10]
+    Loc10 = [35, 66, 124, 144,10]
+    '''
+    
+    '''
+    # R101 with norrow time window
+    # Due time - Ready time = Service time + 10
+    Loc0 = [35, 35, 0, 10000000, 0]
+    Loc1 = [41, 49, 161, 181, 10]
+    Loc2 = [35, 17, 50, 70,10]
+    Loc3 = [55, 45, 116, 136, 10]
+    Loc4 = [55, 20, 149, 169, 10]
+    Loc5 = [15, 30, 34, 54, 10]
+    Loc6 = [25, 30, 99, 119, 10]
+    Loc7 = [20, 50, 81, 101, 10]
+    Loc8 = [10, 43, 95, 115, 10]
+    Loc9 = [55, 60, 97, 117, 10]
+    Loc10 = [30, 60, 124, 134,10]
+    '''
+    
+    '''
+    # R101 with wide time window
+    # Due time - Ready time >> Service time
+    Loc0 = [35, 35, 0, 10000000, 0]
+    Loc1 = [41, 49, 161, 261, 10]
+    Loc2 = [35, 17, 50, 150,10]
+    Loc3 = [55, 45, 116, 216, 10]
+    Loc4 = [55, 20, 149, 249, 10]
+    Loc5 = [15, 30, 34, 134, 10]
+    Loc6 = [25, 30, 99, 199, 10]
+    Loc7 = [20, 50, 81, 181, 10]
+    Loc8 = [10, 43, 95, 195, 10]
+    Loc9 = [55, 60, 97, 197, 10]
+    Loc10 = [30, 60, 124, 224,10]
+    '''
+    
+    
 
     if loc == 0:
         return Loc0
@@ -82,7 +139,7 @@ def initializePop():
     trucksID_2 = []
     while len(trucksID_1) < 10:
         trucksID_1.append(random.randint(1,4))
-    print(trucksID_1)
+    #print(trucksID_1)
     while len(trucksID_2) < 10:
         trucksID_2.append(random.randint(1,4))
     #print(trucksID_2)
@@ -138,9 +195,18 @@ def PMXcrossover(parent_a, parent_b):
 
 
 def mutation(individual):
-    start, stop = sorted(random.sample(range(len(individual)), 2))
-    individual = individual[:start] + individual[stop:start-1:-1] + individual[stop+1:]
-    return individual,
+    newind = individual[:]
+    for z in range(len(newind)):
+        if random.random() < 0.1:
+            newind[z] = math.ceil(random.random()*4)
+    #return individual
+    #start, stop = sorted(random.sample(range(1,len(individual)), 2))
+    #individual = individual[:start] + individual[stop:start-1:-1] + individual[stop+1:]
+    #i = random.randint(0, len(individual)-1)
+    #j = random.randint(1, 4)
+    #individual = individual.pop([i])
+    #individual[i] = individual.insert(i, j)
+    return newind
 
 
 def totalRouteDist(route=[]):
@@ -155,6 +221,8 @@ def totalRouteDist(route=[]):
             dist = dist + LocationDist(route[x],0)
         else:
             dist = dist + LocationDist(route[x-1],route[x])
+            
+    return dist
 
 def checkValid(route=[]):
     time = 0
@@ -166,20 +234,20 @@ def checkValid(route=[]):
         Loc=Location(x)
         if x == 0:
             time = time + LocationDist(0,route[x])
-            if time < Loc(2):
-                time = Loc(2)+Loc(4)
+            if time < Loc[2]:
+                time = Loc[2]+Loc[4]
             else:
-                time = time + Loc(4)
+                time = time + Loc[4]
         if x+1 == len(route):
             time = time + LocationDist(route[x],0)
-            if time < Loc(2):
-                time = Loc(2)+Loc(4)
+            if time < Loc[2]:
+                time = Loc[2]+Loc[4]
             else:
-                time = time + Loc(4)
+                time = time + Loc[4]
         else:
             time = time + LocationDist(route[x-1],route[x])
 
-        if time > Loc(3):
+        if time > Loc[3]:
             valid = False
             return valid
 
@@ -193,9 +261,12 @@ def evaluation(chromosome=[]):
     route2 = []
     route3 = []
     route4 = []
-
+    
+    #print("CHROMOSOME FOR EVAL")
+    #print(chromosome)
     for i in range(len(chromosome[0])):
         dex = chromosome[0].index(i+1)
+        #print(dex)
         if chromosome[1][dex] == 1:
             route1.append(chromosome[0][dex])
         if chromosome[1][dex] == 2:
@@ -236,8 +307,6 @@ def evaluation(chromosome=[]):
 
 
 def main():
-    generations = 10
-    for x in range(10):
     candidate = []
     count = 0
     '''
@@ -247,8 +316,9 @@ def main():
     '''
     while count < 10:
         candidate1, candidate2 = initializePop()
+        #print("EVAL for INIT")
         x,y,val1,z = evaluation(candidate1)
-        x,y,val2,z = evaliation(candidate2)
+        x,y,val2,z = evaluation(candidate2)
         if val1 == True:
             candidate.append(candidate1)
             count = count + 1
@@ -257,53 +327,123 @@ def main():
         if val2 == True:
             candidate.append(candidate2)
             count = count + 1
-            
-    for i in range(10):
-        for j in range(i+1, 10):
-            candidate3_1, candidate4_1 = PMXcrossover(candidate[i][0], candidate[j][0])
-            candidate3, candidate4 = PMXcrossover(candidate[i][1], candidate[j][1])
-            candidate.append(candidate3)
-            candidate.append(candidate4)
-            
-    for i in range(len(candidate)):
-        candidate5_1 = mutation(candidate[i][0])
-        candidate5 = mutation(candidate[i][1])
-        candidate.append(candidate)
+    
+    
+#GENERATION LOOP START
+    num_trucks = []
+    total_dis = []
+    for gen in range(1000):    
         
-    final_candidate = []
-    for i in range(len(candidate)):
-        x, y, valid, z = candidate[i]
-        if valid == True:
-            final_candidate.append(candidate[i])
-    print(final_candidate)
+        #print(candidate)
+        #print("This is the candidate list abov before mutatione")
+        #complete PMX crossover from entire population
+        chromosome = []
+        for i in range(10):
+            for j in range(i+1, 10):
+                child = 0
+                while child < 1:
+                    candidate3_1, candidate4_1 = PMXcrossover(candidate[i][0], candidate[j][0])
+                    #print(candidate3_1, candidate4_1)
+                    #candidate3_sublist = candidate[i][1]
+                    #candidate4_sublist = candidate[j][1]
+                    candidate3_sublist = mutation(candidate[i][1])
+                    candidate4_sublist = mutation(candidate[j][1])
+                    chromosome3 = []
+                    chromosome3.append(candidate3_1)
+                    chromosome3.append(candidate3_sublist)
+                    chromosome4 = []
+                    chromosome4.append(candidate4_1)
+                    chromosome4.append(candidate4_sublist)
+                    x,y,valid1,z = evaluation(chromosome3)
+                    x,y,valid2,z = evaluation(chromosome4)
+                    if valid1 == True:
+                        chromosome.append(chromosome3)
+                        child = child + 1
+                    if valid2 == True:
+                        chromosome.append(chromosome4)
+                        child = child + 1
+                    #print('iteration of chromosome')
+                #print(chromosome)
+        #print(chromosome)
+        #print(candidate)
+        #print("This is the candidate list abov after mutatione")
+        #print("This is the chromosome list above")
+        for i in range(len(candidate)):
+            chromosome.append(candidate[i])
+            
+        final_candidate = chromosome
+        #print(final_candidate)    
+        #print("This is the final population before tourney and elite")
+        #eliteism
+        best = 1000000
+        secbest = 1000001
+        dex1 = 0
+        print(len(final_candidate))
+        for i in range(len(final_candidate)):
+            tr, dista, na, weighteval = evaluation(final_candidate[i])
+            if weighteval < best:
+                print("new best is " + str(weighteval))
+                #bump the current best to second
+                secbest = best
+                dex2 = dex1
+                #set the new best
+                best = weighteval
+                dex1 = i
+            elif weighteval < secbest:
+                secbest = weighteval
+                dex2 = i
 
-    #eliteism
-    best = 1000000
-    secbest = 1000000
-    for i in range(len(final_candidate)):
-        tr, dista, na, weighteval = evaluation(final_candidate[i])
-        if weighteval < best:
-            dex1 = i
-        elif weighteval < secbest:
-            dex2 = i
+        a,b,c,d = evaluation(final_candidate[dex1])
+        #print("The best value for this generation is " + str(d))
+        #print(final_candidate[dex1])
+        #tournament
+        newCandPop = []
+        newCandPop.append(final_candidate[dex1])
+        newCandPop.append(final_candidate[dex2])
+        
+        
+        for i in range(8):
+            compdex1 = math.floor(random.random()*len(final_candidate))
+            compdex2 = math.floor(random.random()*len(final_candidate))
+            a1,b1,c1,d1 = evaluation(final_candidate[compdex1])
+            a2,b2,c2,d2 = evaluation(final_candidate[compdex2])
+            if d1 < d2:
+                newCandPop.append(final_candidate[compdex1])
+            else:
+                newCandPop.append(final_candidate[compdex2])
+        
+        candidate = newCandPop
+        for x in range(len(candidate)):
+            trucks_gen, dista_gen, na_gen, objVal_gen = evaluation(candidate[x])
+        print('END OF GENERATION' + str(gen+1))
+        num_trucks.append(trucks_gen)
+        #print(num_trucks)
+        total_dis.append(dista_gen)
+#GENERATION LOOP END ================================================================================
+   
+    print('THE FINAL GENERATION HAS THESE VALUES')
+    
+    for x in range(len(candidate)):
+        trucks, dista, na, objVal = evaluation(candidate[x])
+        print('candidate: ' + str(candidate[x]))
+        print('uses ' + str(trucks) + ' trucks and has a total distance of ' + str(dista))
+        print('OBJECTIVE FUNCTION VAL = ' + str(objVal))
+    print('C101 with narrow time window')    
+    plt.scatter(total_dis, num_trucks)
+    
+    
+    #print(candidate)
 
-    #tournament
-    newCandPop = []
-    newCandPop.append(final_candidate[dex1])
-    newCandPop.append(final_candidate[dex2])
-    for i in range(8):
-        compdex1 = math.floor(random.random()*len(final_candidate))
-        compdex2 = math.floor(random.random()*len(final_candidate))
-        a1,b1,c1,d1 = evaluation(final_candidate[compdex1])
-        a2,b2,c2,d2 = evaluation(final_candidate[compdex2])
-        if c1 < c2:
-            newCandPop.append(final_candidate[compdex1])
-        else:
-            newCandPop.append(final_candidate[compdex2])
+    #initialize population function
+
+    #loop for number of generations
+        #create next candidate population function
+
 
 if __name__ == '__main__':
     main()
 
-    '''Contact GitHub API Training Shop Blog About
+'''    
+    Contact GitHub API Training Shop Blog About
 © 2017 GitHub, Inc. Terms Privacy Security Status Help
 '''
